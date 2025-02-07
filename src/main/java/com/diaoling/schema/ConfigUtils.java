@@ -57,10 +57,19 @@ public class ConfigUtils {
                 );
                 break;
             case AbstractCollection<?> collectionVal:
-                // TODO: Support for collection data types
+                Datatypes.TypeCollection.Builder collectionBuilder = Datatypes.TypeCollection.newBuilder();
+                for (Object item : collectionVal) {
+                    if (item instanceof BasicValue<?>) {
+                        collectionBuilder.addValues(toType((BasicValue<?>) item));
+                    } else {
+                        BasicValue<Object> wrappedValue = new BasicValue<>("item", item);
+                        collectionBuilder.addValues(toType(wrappedValue));
+                    }
+                }
+                builder.setAnyValue(com.google.protobuf.Any.pack(collectionBuilder.build()));
                 break;
             case MutableText mutableText:
-                // TODO: Support for mutable text data types
+                builder.setStringValue(mutableText.getString());
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported type: " + object.getClass().getName());
@@ -100,17 +109,33 @@ public class ConfigUtils {
                 // value.setValue((T) Long.valueOf(enumVal.ordinal()));
 
                 // 2024.1.26 Maybe fix
-                value.setValue((T)((Enum[])enumVal.getClass().getEnumConstants())[type.getEnumIndexValue()]);
+                value.setValue((T) ((Enum[]) enumVal.getClass().getEnumConstants())[type.getEnumIndexValue()]);
 
                 break;
             case Color colorVal:
                 value.setValue((T) new Color(type.getColorValue().getRed(), type.getColorValue().getGreen(), type.getColorValue().getBlue(), type.getColorValue().getAlpha()));
                 break;
             case AbstractCollection<?> collectionVal:
-                // TODO: Support for collection data types
+                if (type.hasAnyValue()) {
+                    try {
+                        Datatypes.TypeCollection collection = type.getAnyValue().unpack(Datatypes.TypeCollection.class);
+                        AbstractCollection<Object> targetCollection = (AbstractCollection<Object>) collectionVal;
+                        targetCollection.clear();
+                        for (Datatypes.Type itemType : collection.getValuesList()) {
+                            BasicValue<Object> tempValue = new BasicValue<>("item", null);
+                            setValue(itemType, tempValue);
+                            targetCollection.add(tempValue.getValue());
+                        }
+                    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                        throw new IllegalArgumentException("Failed to unpack collection value", e);
+                    }
+                }
                 break;
             case MutableText mutableText:
-                // TODO: Support for mutable text data types
+                if (type.hasStringValue()) {
+                    // 将字符串转换为MutableText
+                    value.setValue((T) net.minecraft.text.Text.literal(type.getStringValue()).asOrderedText());
+                }
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported type: " + object.getClass().getName());
