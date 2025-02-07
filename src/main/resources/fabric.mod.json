@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "example",
+  "version": "${version}",
+  "name": "Example",
+  "description": "这是一个示例模组，用于演示Minecraft的元数据",
+  "authors": ["ExampleTeam"],
+  "contact": {},
+  "license": "Apache-2.0",
+  "icon": "assets/example/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "com.example.mod.client.ExampleClient"
+    ],
+    "main": [
+      "com.example.mod.Example"
+    ]
+  },
+  "mixins": [
+    "example.mixins.json",
+    {
+      "config": "example.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
