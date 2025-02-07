@@ -5,7 +5,6 @@ import com.diaoling.schema.datatype.Datatypes;
 import com.diaoling.schema.file.FileSchema;
 import com.example.information.AppInfo;
 import com.example.value.BasicValue;
-import com.example.value.ChoiceValue;
 import com.google.protobuf.ByteString;
 import net.minecraft.text.MutableText;
 

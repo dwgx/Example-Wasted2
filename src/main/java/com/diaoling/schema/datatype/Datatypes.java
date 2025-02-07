@@ -5,6 +5,9 @@
 
 package com.diaoling.schema.datatype;
 
+import com.google.protobuf.GeneratedMessage;
+import com.google.protobuf.RuntimeVersion;
+
 public final class Datatypes {
     private Datatypes() {
     }
@@ -275,13 +278,13 @@ public final class Datatypes {
     /**
      * Protobuf type {@code com.diaoling.schema.Type}
      */
-    public static final class Type extends com.google.protobuf.GeneratedMessage implements
+    public static final class Type extends GeneratedMessage implements
             // @@protoc_insertion_point(message_implements:com.diaoling.schema.Type)
             TypeOrBuilder {
         private static final long serialVersionUID = 0L;
 
         static {
-            com.google.protobuf.RuntimeVersion.validateProtobufGencodeVersion(com.google.protobuf.RuntimeVersion.RuntimeDomain.PUBLIC,
+            RuntimeVersion.validateProtobufGencodeVersion(RuntimeVersion.RuntimeDomain.PUBLIC,
                     /* major= */ 4,
                     /* minor= */ 29,
                     /* patch= */ 3,
