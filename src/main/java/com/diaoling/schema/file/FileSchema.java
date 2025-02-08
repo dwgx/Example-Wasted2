@@ -317,7 +317,7 @@ public final class FileSchema {
             static final com.google.protobuf.MapEntry<
                     java.lang.String, java.lang.String> defaultEntry =
                     com.google.protobuf.MapEntry
-                            .<java.lang.String, java.lang.String>newDefaultInstance(
+                            .newDefaultInstance(
                                     com.diaoling.schema.file.FileSchema.internal_static_com_diaoling_schema_BaseFile_MetadataEntry_descriptor,
                                     com.google.protobuf.WireFormat.FieldType.STRING,
                                     "",
